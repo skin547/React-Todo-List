@@ -1,12 +1,33 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React ,{createContext, useReducer} from 'react'
+import ReactDOM from 'react-dom'
+import {Container} from 'react-bootstrap'
+import {Route, BrowserRouter as Router} from 'react-router-dom'
+import Header from './components/Header'
+import Home from './components/Home'
+import Body from './components/Body'
+import {TodoReducer, initialState} from './Reducers/TodoReducer'
+// import {TodoContext, Store} from './context/TodoContext'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const TodoContext = createContext({});
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const App = () => {
+
+    const [state, dispatch] = useReducer(TodoReducer, initialState);
+
+    return (
+    <TodoContext.Provider value={{ state, dispatch }} >
+        <Router>
+            <Container>
+                    <Header />
+                    <Body />
+            </Container>
+        </Router>
+    </TodoContext.Provider>
+
+    )
+}
+
+
+ReactDOM.render(<App/>,document.getElementById('root'));
+
+export {TodoContext};
